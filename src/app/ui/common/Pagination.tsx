@@ -35,7 +35,7 @@ const PageNumber = ({
 };
 
 export default function Pagination({ abbr, totalPage }: Props) {
-  const pathname = usePathname();
+  const pathname = abbr === "best" ? "/best" : usePathname();
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get("page")) || 1;
 

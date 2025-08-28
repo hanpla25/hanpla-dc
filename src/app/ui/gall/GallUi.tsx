@@ -21,7 +21,7 @@ export default function GallUi({
 }: Props) {
   return (
     <div className="px-2 space-y-4 mb-4">
-      <Suspense fallback={<LoadingSpinner />}>
+      <Suspense key={currentPage + queryString} fallback={<LoadingSpinner />}>
         <GallPostList
           abbr={abbr}
           currentPage={currentPage}
