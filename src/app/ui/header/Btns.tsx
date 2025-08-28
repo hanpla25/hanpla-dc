@@ -1,7 +1,11 @@
 import Link from "next/link";
 
 // --- Constants ---
-import { PROFILE_HREF, SIGNUP_HREF } from "@/app/lib/constants/href-constants";
+import {
+  CATEGORY_HREF,
+  PROFILE_HREF,
+  SIGNUP_HREF,
+} from "@/app/lib/constants/href-constants";
 
 // --- UI ---
 import SearchIcon from "./SearchIcon";
@@ -9,11 +13,22 @@ import MobileMenuBtn from "./MobileMenuBtn";
 import LoginLink from "../common/LoginLink";
 import LogoutBtn from "../common/LogoutBtn";
 
-const MobileBtns = ({ onSearchClick }: { onSearchClick: () => void }) => {
+const MobileBtns = ({
+  isMobileMenuOpen,
+  onMobileClick,
+  onSearchClick,
+}: {
+  isMobileMenuOpen: boolean;
+  onMobileClick: () => void;
+  onSearchClick: () => void;
+}) => {
   return (
     <div className="flex items-center gap-4 lg:hidden">
       <SearchIcon onClick={onSearchClick} />
-      <MobileMenuBtn isMobileMenuOpen={false} />
+      <MobileMenuBtn
+        onClick={onMobileClick}
+        isMobileMenuOpen={isMobileMenuOpen}
+      />
     </div>
   );
 };
@@ -28,6 +43,7 @@ const DesktopBtns = ({
   return (
     <div className="lg:flex items-center gap-4 hidden">
       <SearchIcon onClick={onSearchClick} />
+      <Link href={CATEGORY_HREF}>전체 갤러리</Link>
       {isLogin ? (
         <>
           <Link href={PROFILE_HREF}>프로필</Link>
@@ -43,11 +59,25 @@ const DesktopBtns = ({
   );
 };
 
-export default function Btns({ onSearchClick }: { onSearchClick: () => void }) {
+export default function Btns({
+  isLogin,
+  isMobileMenuOpen,
+  onSearchClick,
+  onMobileClick,
+}: {
+  isLogin: boolean;
+  isMobileMenuOpen: boolean;
+  onSearchClick: () => void;
+  onMobileClick: () => void;
+}) {
   return (
     <>
-      <MobileBtns onSearchClick={onSearchClick} />
-      <DesktopBtns onSearchClick={onSearchClick} isLogin={false} />
+      <MobileBtns
+        isMobileMenuOpen={isMobileMenuOpen}
+        onMobileClick={onMobileClick}
+        onSearchClick={onSearchClick}
+      />
+      <DesktopBtns onSearchClick={onSearchClick} isLogin={isLogin} />
     </>
   );
 }

@@ -12,6 +12,7 @@ import ProfileBox from "./ui/side/ProfileBox";
 // --- styles ---
 import { Geist, Geist_Mono } from "next/font/google";
 import "./style/globals.css";
+import { getUserToken } from "./lib/data/user-data";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,18 +34,20 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [allGallList, popularGallList, newestGallList] = await Promise.all([
-    fetchGallListData(),
-    fetchGallListData("popular", 5),
-    fetchGallListData("newest", 5),
-  ]);
+  const [userToken, allGallList, popularGallList, newestGallList] =
+    await Promise.all([
+      getUserToken(),
+      fetchGallListData(),
+      fetchGallListData("popular", 5),
+      fetchGallListData("newest", 5),
+    ]);
 
   return (
     <html lang="ko">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased  max-w-6xl mx-auto`}
       >
-        <Header allGallList={allGallList} />
+        <Header userToken={userToken} allGallList={allGallList} />
         <div className="lg:flex gap-8">
           {/* 왼쪽 */}
           <main className="lg:basis-3/4">{children}</main>

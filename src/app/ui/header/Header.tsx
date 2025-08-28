@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 // --- Type ---
 import { GallMeta } from "@/app/lib/type/gallType";
@@ -9,22 +10,39 @@ import { GallMeta } from "@/app/lib/type/gallType";
 import Btns from "./Btns";
 import Logo from "./Logo";
 import SearchModal from "./SearchModal";
+import RecentGall from "./RecentGall";
+import MobileMenuWrapper from "./MobileMenuWrapper";
+import { UserPayload } from "@/app/lib/type/userType";
 
 type Props = {
+  userToken: UserPayload | null;
   allGallList: GallMeta[];
 };
 
-export default function Header({ allGallList }: Props) {
+export default function Header({ userToken, allGallList }: Props) {
+  const isLogin = userToken ? true : false;
+  const pathname = usePathname();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleSearchClick = () => setIsModalOpen((prev) => !prev);
+  const handleMobileMenuClick = () => setIsMobileMenuOpen((prev) => !prev);
   const closeModalClick = () => setIsModalOpen(false);
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   return (
     <header className="mx-auto max-w-6xl relative">
-      <div className="flex items-center justify-between p-4">
+      <div className="flex items-center justify-between px-2 py-4">
         <Logo />
-        <Btns onSearchClick={handleSearchClick} />
+        <Btns
+          isLogin={isLogin}
+          onSearchClick={handleSearchClick}
+          isMobileMenuOpen={isMobileMenuOpen}
+          onMobileClick={handleMobileMenuClick}
+        />
       </div>
 
       {isModalOpen && (
@@ -33,6 +51,8 @@ export default function Header({ allGallList }: Props) {
           allGallList={allGallList}
         />
       )}
+      {isMobileMenuOpen && <MobileMenuWrapper isLogin={isLogin} />}
+      <RecentGall gallData={allGallList} />
     </header>
   );
 }
