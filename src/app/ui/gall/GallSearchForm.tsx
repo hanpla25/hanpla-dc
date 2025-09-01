@@ -9,7 +9,7 @@ function Select({ option }: { option: string }) {
   return (
     <select name="option" id="option" className={style} defaultValue={option}>
       <option value="title">제목</option>
-      <option value="user_name">닉네임</option>
+      <option value="nickname">닉네임</option>
     </select>
   );
 }

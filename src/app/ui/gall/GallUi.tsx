@@ -4,13 +4,14 @@ import GallPostList from "./GallPostList";
 import LoadingSpinner from "../common/LoadingSpinner";
 import GallSearchForm from "./GallSearchForm";
 import Pagination from "../common/Pagination";
-import PaginationForm from "../common/PaginationForm";
 
 type Props = {
   abbr: string;
   currentPage: number;
   queryString: string;
   totalPage: number;
+  search?: string;
+  option?: string;
 };
 
 export default function GallUi({
@@ -18,6 +19,8 @@ export default function GallUi({
   currentPage,
   queryString,
   totalPage,
+  search,
+  option,
 }: Props) {
   return (
     <div className="px-2 space-y-4 mb-4">
@@ -26,6 +29,8 @@ export default function GallUi({
           abbr={abbr}
           currentPage={currentPage}
           queryString={queryString}
+          search={search}
+          option={option}
         />
       </Suspense>
       <GallSearchForm abbr={abbr} />

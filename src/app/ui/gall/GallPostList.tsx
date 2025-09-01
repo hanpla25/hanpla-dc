@@ -16,6 +16,8 @@ type Props = {
   abbr: string;
   currentPage: number;
   queryString: string;
+  search?: string;
+  option?: string;
 };
 
 const Title = ({
@@ -83,12 +85,16 @@ const Info = ({
 export default async function GallPostList({
   abbr,
   currentPage,
+  search,
+  option,
   queryString,
 }: Props) {
   const postListData = await fetchPostListData({
     abbr,
     isPopular: true,
     page: currentPage,
+    search,
+    option,
   });
 
   if (postListData.postList.length === 0)

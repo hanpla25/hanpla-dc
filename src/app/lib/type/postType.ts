@@ -16,3 +16,19 @@ export type PostListData = {
   postList: PostListType[];
   count: number;
 };
+
+export type Post = {
+  id: number;
+  nickname: string;
+  title: string;
+  content: object;
+  abbr: string;
+  gall_name: string;
+  view_count: number;
+  like_count: number;
+  dislike_count: number;
+  comment_count: number;
+  is_login: boolean;
+  ip_address: string;
+  created_at: string;
+};
