@@ -21,8 +21,6 @@ export default async function BestPage(props: { searchParams: SearchParams }) {
     }),
   ]);
 
-  console.log(search, option, currentPage);
-
   return (
     <>
       <GallUi

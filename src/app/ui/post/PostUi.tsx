@@ -58,7 +58,7 @@ export default function PostUi({ abbr, postData }: Props) {
     <div className="mb-4">
       <Title title={postData.title} createdAt={postData.created_at} />
       <Info
-        userName={postData.user_name}
+        userName={postData.nickname}
         viewCount={postData.view_count}
         likeCount={postData.like_count}
         commentCount={postData.comment_count}

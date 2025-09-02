@@ -22,8 +22,8 @@ export async function getUserToken(): Promise<UserPayload | null> {
       "user_id" in decoded &&
       "user_name" in decoded
     ) {
-      const { user_id, user_name, created_at } = decoded as UserPayload;
-      return { user_id, user_name, created_at };
+      const { user_id, nickname, created_at } = decoded as UserPayload;
+      return { user_id, nickname, created_at };
     }
 
     return null;
