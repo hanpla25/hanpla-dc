@@ -4,9 +4,9 @@ import Link from "next/link";
 import { fetchGallList } from "@/app/lib/data/gall";
 
 type Props = {
-  order: "popular" | "newest" | undefined;
-  size: number;
-  className: string;
+  order?: "popular" | "newest" | undefined;
+  size?: number;
+  className?: string;
 };
 
 export default async function GallList({ order, size, className }: Props) {
