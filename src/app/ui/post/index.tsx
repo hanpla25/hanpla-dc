@@ -17,7 +17,7 @@ type Props = {
 
 function Title({ title, createdAt }: { title: string; createdAt: string }) {
   return (
-    <div className="flex items-center justify-between px-2 lg:px-1 py-1 border-y border-neutral-400">
+    <div className="flex items-center justify-between px-2 py-1 border-y border-neutral-400">
       <h2 className="text-lg font-semibold">{title}</h2>
       <span className="text-sm text-neutral-600">
         {formatDate(createdAt, "YMDT")}
@@ -42,7 +42,7 @@ function Info({
   isLogin: boolean;
 }) {
   return (
-    <div className="flex items-center justify-between px-2 lg:px-1 py-1.5 border-b border-neutral-200 mb-4">
+    <div className="flex items-center justify-between px-2 py-1.5 border-b border-neutral-200 mb-4">
       <span className="font-medium">
         {nickname} {!isLogin && ipAddress}
       </span>
