@@ -12,8 +12,8 @@ const isGall = (item: unknown): item is GallMeta => {
     item !== null &&
     "abbr" in item &&
     "name" in item &&
-    typeof (item as any).abbr === "string" &&
-    typeof (item as any).name === "string"
+    typeof item.abbr === "string" &&
+    typeof item.name === "string"
   );
 };
 
