@@ -14,14 +14,16 @@ export default async function AbbrPage(props: {
 
   const searchParams = await props.searchParams;
   const currentPage = Number(searchParams.page) || 1;
-  const { search, option } = searchParams;
+  const { search, option, mode } = searchParams;
   const queryString = new URLSearchParams(searchParams).toString();
+
+  const isPopular = mode === "popular" || abbr === "best" ? true : false;
 
   return (
     <div>
       <GallUi
         abbr={abbr}
-        isPopular={false}
+        isPopular={isPopular}
         isBest={abbr === "best" ? true : false}
         currentPage={currentPage}
         search={search}
