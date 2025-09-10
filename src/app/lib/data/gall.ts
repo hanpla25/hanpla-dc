@@ -95,7 +95,7 @@ export async function fetchPostListData({
 
   const maskedData = data.map((item) => ({
     ...item,
-    ip_address: maskIpAddress(item.ipAddress),
+    ipAddress: maskIpAddress(item.ipAddress),
   }));
 
   return {
