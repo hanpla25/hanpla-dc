@@ -10,6 +10,7 @@ import HeadText from "../common/HeadText";
 import PostList from "./PostList";
 import Pagination from "../common/Pagination";
 import SearchForm from "./SearchForm";
+import Taps from "./Taps";
 
 type Props = {
   abbr: string;
@@ -41,6 +42,7 @@ export default async function GallUi({
   return (
     <div>
       <HeadText text={gallName} href={`/${abbr}`} />
+      {abbr !== "best" && <Taps abbr={abbr} isPopular={isPopular} />}
       <PostList
         abbr={abbr}
         isBest={isBest}
