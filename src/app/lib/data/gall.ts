@@ -1,26 +1,26 @@
-"use server";
-
 import { createClient } from "@/app/utils/supabase/server";
+import { redirect } from "next/navigation";
 
-// --- Types ---
-import { GallMeta } from "../type/gallType";
-import { PostListData } from "../type/postType";
-import {
-  POST_LIST_ITEM_PER_PAGE,
-  POST_LIST_LIKE_CUT,
-} from "../constants/post-constants";
+// --- Utils ---
 import { maskIpAddress } from "@/app/utils/maskIpAddress";
 
-export async function fetchGallListData(
-  sort?: "popular" | "newest",
+// --- Constants ---
+import { POST_LIST_ITEM_PER_PAGE, POST_LIST_LIKE_CUT } from "../constants/post";
+
+// --- Types ---
+import { GallMeta } from "../types/gall";
+import { PostListData } from "../types/post";
+
+export async function fetchGallList(
+  order?: "popular" | "newest",
   size?: number
 ): Promise<GallMeta[]> {
   const supabase = await createClient();
 
   const query = supabase.from("galls").select("abbr,name");
 
-  if (sort === "newest") query.order("id", { ascending: false });
-  if (sort === "popular") query.order("today_post_count", { ascending: false });
+  if (order === "newest") query.order("id", { ascending: false });
+  if (order === "popular") query.order("todayPostCount", { ascending: false });
   if (size) query.limit(size);
 
   const { data, error } = await query;
@@ -34,16 +34,34 @@ export async function fetchGallListData(
   return data;
 }
 
+export async function fetchGallName(abbr: string): Promise<string> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("galls")
+    .select("name")
+    .eq("abbr", abbr)
+    .single();
+
+  if (error) {
+    console.error(error);
+
+    redirect("/");
+  }
+
+  return data.name;
+}
+
 export async function fetchPostListData({
   abbr,
-  page = 1,
+  page,
   isPopular,
   search,
   option,
 }: {
-  abbr?: string;
+  abbr: string;
   page: number;
-  isPopular?: boolean;
+  isPopular: boolean;
   search?: string;
   option?: string;
 }): Promise<PostListData> {
@@ -55,14 +73,14 @@ export async function fetchPostListData({
   const query = supabase
     .from("posts")
     .select(
-      "id,title,nickname,abbr,gall_name,view_count,like_count,comment_count,ip_address,created_at,is_login",
+      "id,title,nickname,abbr,gallName,viewCount,likeCount,commentCount,ipAddress,createdAt,isLogin",
       { count: "exact" }
     )
     .range(from, to)
     .order("id", { ascending: false });
 
   if (abbr !== "best") query.eq("abbr", abbr);
-  if (isPopular) query.gte("like_count", POST_LIST_LIKE_CUT);
+  if (isPopular) query.gte("likeCount", POST_LIST_LIKE_CUT);
   if (search && option) query.ilike(option, `%${search}%`);
 
   const { data, error, count } = await query;
@@ -77,7 +95,7 @@ export async function fetchPostListData({
 
   const maskedData = data.map((item) => ({
     ...item,
-    ip_address: maskIpAddress(item.ip_address),
+    ip_address: maskIpAddress(item.ipAddress),
   }));
 
   return {
@@ -93,7 +111,7 @@ export async function fetchPostListTotalPage({
   search,
   option,
 }: {
-  abbr?: string;
+  abbr: string;
   page: number;
   isPopular?: boolean;
   search?: string;
@@ -109,8 +127,8 @@ export async function fetchPostListTotalPage({
     .select("id", { count: "exact" })
     .range(from, to);
 
-  if (abbr) query.eq("abbr", abbr);
-  if (isPopular) query.gte("like_count", POST_LIST_LIKE_CUT);
+  if (abbr !== "best") query.eq("abbr", abbr);
+  if (isPopular) query.gte("likeCount", POST_LIST_LIKE_CUT);
   if (search && option) query.ilike(option, `%${search}%`);
 
   const { error, count } = await query;

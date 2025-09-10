@@ -1,19 +1,21 @@
-import { Suspense } from "react";
+// --- Data ---
+import { fetchGallName } from "@/app/lib/data/gall";
+import { fetchPostData } from "@/app/lib/data/post";
 
-// --- Types ---
-import { Post } from "@/app/lib/type/postType";
-
-// --- 유틸 ---
+// --- Utils ---
 import formatDate from "@/app/utils/formatDate";
 
 // --- UI ---
+import HeadText from "../common/HeadText";
+
+// --- Types ---
 
 type Props = {
   abbr: string;
-  postData: Post;
+  postId: number;
 };
 
-const Title = ({ title, createdAt }: { title: string; createdAt: string }) => {
+function Title({ title, createdAt }: { title: string; createdAt: string }) {
   return (
     <div className="flex items-center justify-between px-2 lg:px-1 py-1 border-y border-neutral-400">
       <h2 className="text-lg font-semibold">{title}</h2>
@@ -22,27 +24,27 @@ const Title = ({ title, createdAt }: { title: string; createdAt: string }) => {
       </span>
     </div>
   );
-};
+}
 
-const Info = ({
-  userName,
+function Info({
+  nickname,
   viewCount,
   likeCount,
   commentCount,
   ipAddress,
   isLogin,
 }: {
-  userName: string;
+  nickname: string;
   viewCount: number;
   likeCount: number;
   commentCount: number;
   ipAddress: string;
   isLogin: boolean;
-}) => {
+}) {
   return (
     <div className="flex items-center justify-between px-2 lg:px-1 py-1.5 border-b border-neutral-200 mb-4">
       <span className="font-medium">
-        {userName} {!isLogin && ipAddress}
+        {nickname} {!isLogin && ipAddress}
       </span>
       <div className="space-x-2 text-sm text-neutral-600">
         <span>조회 {viewCount}</span>
@@ -51,22 +53,26 @@ const Info = ({
       </div>
     </div>
   );
-};
+}
 
-export default function PostUi({ abbr, postData }: Props) {
+export default async function PostUi({ abbr, postId }: Props) {
+  const [gallName, postData] = await Promise.all([
+    abbr === "best" ? "실시간 베스트" : fetchGallName(abbr),
+    fetchPostData(abbr, postId),
+  ]);
+
   return (
-    <div className="mb-4">
-      <Title title={postData.title} createdAt={postData.created_at} />
+    <div>
+      <HeadText text={`${gallName}`} href={`/${abbr}`} />
+      <Title title={postData.title} createdAt={postData.createdAt} />
       <Info
-        userName={postData.nickname}
-        viewCount={postData.view_count}
-        likeCount={postData.like_count}
-        commentCount={postData.comment_count}
-        isLogin={postData.is_login}
-        ipAddress={postData.ip_address}
+        nickname={postData.nickname}
+        viewCount={postData.viewCount}
+        likeCount={postData.likeCount}
+        commentCount={postData.commentCount}
+        ipAddress={postData.ipAddress}
+        isLogin={postData.isLogin}
       />
-
-      <Suspense fallback={null}></Suspense>
     </div>
   );
 }

@@ -1,20 +1,19 @@
 import { useEffect, useState } from "react";
 
 // --- Constants ---
-import { GallMeta } from "../lib/type/gallType";
-import {
-  MAX_RECENT,
-  STORAGE_KEY,
-} from "../lib/constants/recent-gall-constants";
+import { MAX_RECENT, STORAGE_KEY } from "../lib/constants/recent-gall";
 
 // --- Types ---
+import { GallMeta } from "../lib/types/gall";
 
-const isGall = (item: GallMeta): item is GallMeta => {
+const isGall = (item: unknown): item is GallMeta => {
   return (
-    item &&
     typeof item === "object" &&
-    typeof item.abbr === "string" &&
-    typeof item.name === "string"
+    item !== null &&
+    "abbr" in item &&
+    "name" in item &&
+    typeof (item as any).abbr === "string" &&
+    typeof (item as any).name === "string"
   );
 };
 

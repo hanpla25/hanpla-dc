@@ -5,13 +5,17 @@ export default function formatDate(
   const date = new Date(dateString);
   const now = new Date();
 
+  const toKST = (d: Date) => new Date(d.getTime() + 9 * 60 * 60 * 1000);
+
+  const kstDate = toKST(date);
+  const kstNow = toKST(now);
+
   const formatDatePart = (d: Date) =>
     d
       .toLocaleDateString("ko-KR", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
-        timeZone: "Asia/Seoul",
       })
       .replace(/\.$/, "");
 
@@ -20,7 +24,6 @@ export default function formatDate(
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
-      timeZone: "Asia/Seoul",
     });
 
   if (type === "relative") {
@@ -31,25 +34,24 @@ export default function formatDate(
     return `${Math.floor(diffSec / 86400)}일 전`;
   }
 
-  const nowKST = new Date(
-    now.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })
-  );
-  const dateKST = new Date(
-    date.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })
-  );
-  const isToday = dateKST.toDateString() === nowKST.toDateString();
+  const isToday =
+    kstDate.getUTCFullYear() === kstNow.getUTCFullYear() &&
+    kstDate.getUTCMonth() === kstNow.getUTCMonth() &&
+    kstDate.getUTCDate() === kstNow.getUTCDate();
 
   switch (type) {
     case "time":
-      return isToday ? formatTimePart(date) : formatDatePart(date).slice(5);
+      return isToday
+        ? formatTimePart(kstDate)
+        : formatDatePart(kstDate).slice(5);
     case "YMD":
-      return formatDatePart(date);
+      return formatDatePart(kstDate);
     case "YMDT":
-      return `${formatDatePart(date)} ${formatTimePart(date)}`;
+      return `${formatDatePart(kstDate)} ${formatTimePart(kstDate)}`;
     case "MDT":
-      const md = formatDatePart(date).slice(5);
-      return `${md} ${formatTimePart(date)}`;
+      const md = formatDatePart(kstDate).slice(5);
+      return `${md} ${formatTimePart(kstDate)}`;
     default:
-      return formatDatePart(date);
+      return formatDatePart(kstDate);
   }
 }

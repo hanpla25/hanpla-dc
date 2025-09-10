@@ -3,10 +3,8 @@
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 
-// --- Utis ---
+// --- Utils ---
 import pagination from "@/app/utils/generatePagination";
-
-// --- UI ---
 import PaginationForm from "./PaginationForm";
 
 type Props = {
@@ -14,7 +12,7 @@ type Props = {
   totalPage: number;
 };
 
-const PageNumber = ({
+function PageNumber({
   page,
   href,
   isActive,
@@ -22,7 +20,7 @@ const PageNumber = ({
   page: number | string;
   href: string;
   isActive: boolean;
-}) => {
+}) {
   const className = isActive
     ? "font-bold text-lg text-neutral-600 underline underline-offset-4 decoration-2"
     : "font-bold text-lg text-neutral-600";
@@ -32,7 +30,7 @@ const PageNumber = ({
       {page}
     </Link>
   );
-};
+}
 
 export default function Pagination({ abbr, totalPage }: Props) {
   const path = usePathname();
@@ -51,7 +49,7 @@ export default function Pagination({ abbr, totalPage }: Props) {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <ul className="space-x-2">
+      <div className="space-x-2">
         {allPages.map((page) => (
           <PageNumber
             key={page}
@@ -60,7 +58,7 @@ export default function Pagination({ abbr, totalPage }: Props) {
             isActive={currentPage === page}
           />
         ))}
-      </ul>
+      </div>
       <PaginationForm
         totalPage={totalPage}
         searchParams={searchParams}

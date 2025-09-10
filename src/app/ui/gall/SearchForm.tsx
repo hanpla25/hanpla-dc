@@ -42,7 +42,7 @@ function Button() {
   );
 }
 
-export default function GallSearchForm({ abbr }: { abbr: string }) {
+export default function SearchForm({ abbr }: { abbr: string }) {
   const searchParams = useSearchParams();
 
   const search = searchParams.get("search") ?? "";
@@ -56,7 +56,7 @@ export default function GallSearchForm({ abbr }: { abbr: string }) {
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center mb-2 px-2">
       <Form
         action={`/${abbr}`}
         onSubmit={handleSubmit}

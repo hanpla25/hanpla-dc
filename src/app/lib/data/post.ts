@@ -1,22 +1,22 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/app/utils/supabase/server";
 
-// --- Types ---
-import { Post } from "../type/postType";
-
 // --- Utils ---
 import { maskIpAddress } from "@/app/utils/maskIpAddress";
+
+// --- Types ---
+import { PostType } from "../types/post";
 
 export async function fetchPostData(
   abbr: string,
   postId: number
-): Promise<Post> {
+): Promise<PostType> {
   const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("posts")
     .select(
-      "id,nickname,title,content,abbr,gall_name,view_count,like_count,dislike_count,comment_count,ip_address,created_at,is_login"
+      "id,nickname,title,content,abbr,gallName,viewCount,likeCount,dislikeCount,commentCount,ipAddress,createdAt,isLogin"
     )
     .eq("id", postId)
     .single();
@@ -29,6 +29,6 @@ export async function fetchPostData(
 
   return {
     ...data,
-    ip_address: maskIpAddress(data.ip_address),
+    ipAddress: maskIpAddress(data.ipAddress),
   };
 }
