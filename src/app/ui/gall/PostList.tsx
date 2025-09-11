@@ -83,7 +83,7 @@ export default function PostList({
   queryString,
 }: Props) {
   return (
-    <div className="divide-y divide-neutral-200 min-h-[420px] mb-2">
+    <div className="divide-y divide-neutral-200 min-h-[400px] mb-2">
       {postList.map((item) => (
         <Link
           key={item.id}
