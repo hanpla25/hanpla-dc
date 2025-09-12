@@ -5,6 +5,7 @@ import Form from "next/form";
 // --- UI ---
 import { FormInput } from "../common/FormUi";
 import Buttons from "./Buttons";
+import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
 export default function WriteForm() {
   return (
@@ -34,9 +35,12 @@ export default function WriteForm() {
         type="text"
         name="title"
         label="제목"
-        defaultValue=""
         placeholder="제목을 입력해주세요."
       />
+
+      <div className="border border-neutral-300">
+        <SimpleEditor />
+      </div>
 
       <Buttons isPending={false} />
     </Form>
