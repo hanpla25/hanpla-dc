@@ -7,6 +7,7 @@ import formatDate from "@/app/utils/formatDate";
 
 // --- UI ---
 import HeadText from "../common/HeadText";
+import Content from "./Content";
 
 // --- Types ---
 
@@ -73,6 +74,7 @@ export default async function PostUi({ abbr, postId }: Props) {
         ipAddress={postData.ipAddress}
         isLogin={postData.isLogin}
       />
+      <Content content={postData.content} />
     </div>
   );
 }

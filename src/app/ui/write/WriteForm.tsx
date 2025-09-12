@@ -1,15 +1,30 @@
 "use client";
 
+import { useActionState, useState } from "react";
 import Form from "next/form";
 
+// --- Actions ---
+import { writeAction } from "@/app/lib/actions/post";
+
 // --- UI ---
-import { FormInput } from "../common/FormUi";
+import { FormInput, FormMsg } from "../common/FormUi";
 import Buttons from "./Buttons";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
+// --- Types ---
+import { JSONContent } from "@tiptap/react";
+
 export default function WriteForm() {
+  const [state, formAction, pending] = useActionState(writeAction, null);
+
+  const [editorJson, setEditorJson] = useState<string>("");
+
+  const handleEditorChange = (jsonContent: JSONContent) => {
+    setEditorJson(JSON.stringify(jsonContent));
+  };
+
   return (
-    <Form action={""} className="px-2 space-y-3">
+    <Form action={formAction} className="px-2 space-y-3">
       <div className="flex items-center gap-4">
         <FormInput
           label="닉네임"
@@ -39,10 +54,13 @@ export default function WriteForm() {
       />
 
       <div className="border border-neutral-300">
-        <SimpleEditor />
+        <SimpleEditor onUpdate={handleEditorChange} />
       </div>
 
-      <Buttons isPending={false} />
+      <input type="hidden" name="content" id="content" value={editorJson} />
+
+      <Buttons isPending={pending} />
+      {state?.success === false && <FormMsg msg={state.msg} />}
     </Form>
   );
 }
