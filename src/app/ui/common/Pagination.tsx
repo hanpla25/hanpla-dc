@@ -49,7 +49,7 @@ export default function Pagination({ abbr, totalPage }: Props) {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="space-x-2">
+      <div className="space-x-4">
         {allPages.map((page) => (
           <PageNumber
             key={page}
