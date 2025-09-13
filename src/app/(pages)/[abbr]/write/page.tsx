@@ -17,7 +17,7 @@ export default async function WritePage(props: { params: Params }) {
   return (
     <div>
       <HeadText text={gallName} href={`/${abbr}`} />
-      <WriteForm />
+      <WriteForm gallName={gallName} />
     </div>
   );
 }

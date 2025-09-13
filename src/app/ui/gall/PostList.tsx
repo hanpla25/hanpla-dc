@@ -26,7 +26,7 @@ function Title({
   return (
     <div className="px-2 flex items-center gap-2 font-medium">
       <span className="truncate">{title}</span>
-      <span className="text-xs text-neutral-700 bg-neutral-200 rounded p-1">
+      <span className="text-xs text-neutral-700 border border-neutral-200 rounded p-1.5">
         {commentCount}
       </span>
     </div>
@@ -83,7 +83,10 @@ export default function PostList({
   queryString,
 }: Props) {
   return (
-    <div className="divide-y divide-neutral-200 min-h-[400px] mb-2">
+    <div className="divide-y divide-neutral-200 min-h-[350px] mb-2">
+      {postList.length === 0 && (
+        <p className="text-center pt-30">아직 게시글이 없어요.</p>
+      )}
       {postList.map((item) => (
         <Link
           key={item.id}
