@@ -1,3 +1,5 @@
+import { KeyboardEventHandler } from "react";
+
 export function FormInput({
   type,
   name,
@@ -6,6 +8,7 @@ export function FormInput({
   minLength,
   maxLength,
   placeholder,
+  onKeyDown,
 }: {
   type: string;
   name: string;
@@ -14,6 +17,7 @@ export function FormInput({
   minLength?: number;
   maxLength?: number;
   placeholder: string;
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
 }) {
   return (
     <div className="flex flex-col space-y-1">
@@ -29,6 +33,7 @@ export function FormInput({
         maxLength={maxLength}
         required
         placeholder={placeholder}
+        onKeyDown={onKeyDown}
         className="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:outline-none"
       />
     </div>

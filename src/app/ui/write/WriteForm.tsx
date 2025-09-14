@@ -58,6 +58,11 @@ export default function WriteForm({ gallName }: Props) {
         name="title"
         label="제목"
         placeholder="제목을 입력해주세요."
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+          }
+        }}
       />
 
       <div className="border border-neutral-300">
