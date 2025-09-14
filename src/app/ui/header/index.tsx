@@ -1,6 +1,8 @@
 // --- UI ---
 import Logo from "./Logo";
 import Btns from "./Btns";
+
+// --- Types ---
 import { GallMeta } from "@/app/lib/types/gall";
 
 type Props = {

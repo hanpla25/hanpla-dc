@@ -2,6 +2,8 @@
 import Search from "./search";
 import HeaderLinks from "./HeaderLinks";
 import MobileMenu from "./mobile-menu";
+
+// --- Types ---
 import { GallMeta } from "@/app/lib/types/gall";
 
 type Props = {
