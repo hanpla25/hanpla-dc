@@ -63,7 +63,7 @@ export default async function PostUi({ abbr, postId }: Props) {
   ]);
 
   return (
-    <div>
+    <div className="mb-4">
       <HeadText text={`${gallName}`} href={`/${abbr}`} />
       <Title title={postData.title} createdAt={postData.createdAt} />
       <Info

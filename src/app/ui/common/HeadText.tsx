@@ -5,7 +5,7 @@ type Props = {
   href?: string;
 };
 
-const className = "block p-2 font-semibold text-lg";
+const className = "inline-block p-2 font-semibold text-lg";
 
 export default function HeadText({ text, href }: Props) {
   return href ? (
