@@ -26,7 +26,7 @@ function Title({
   return (
     <div className="px-2 flex items-center gap-2 font-medium">
       <span className="truncate">{title}</span>
-      <span className="text-xs text-neutral-700 border border-neutral-200 rounded p-1.5">
+      <span className="text-xs text-neutral-700 border border-neutral-200 rounded px-1 py-0.5">
         {commentCount}
       </span>
     </div>
