@@ -1,4 +1,5 @@
 // --- UI ---
+import ScrollToTop from "@/app/ui/common/ScrollToTop";
 import GallUi from "@/app/ui/gall";
 import PostUi from "@/app/ui/post";
 
@@ -23,6 +24,7 @@ export default async function PostPage(props: {
 
   return (
     <>
+      <ScrollToTop />
       <PostUi abbr={abbr} postId={postId} />
       <GallUi
         abbr={abbr}
