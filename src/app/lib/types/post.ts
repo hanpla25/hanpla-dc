@@ -32,3 +32,14 @@ export type PostType = {
   ipAddress: string;
   createdAt: string;
 };
+
+export type CommentType = {
+  id: number;
+  postId: number;
+  parentId: number | null;
+  nickname: string;
+  content: string;
+  isLogin: boolean;
+  ipAddress: string;
+  createdAt: string;
+};

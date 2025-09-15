@@ -1,6 +1,6 @@
 // --- Data ---
 import { fetchGallName } from "@/app/lib/data/gall";
-import { fetchPostData } from "@/app/lib/data/post";
+import { fetchCommentData, fetchPostData } from "@/app/lib/data/post";
 
 // --- Utils ---
 import formatDate from "@/app/utils/formatDate";
@@ -8,9 +8,9 @@ import formatDate from "@/app/utils/formatDate";
 // --- UI ---
 import HeadText from "../common/HeadText";
 import Content from "./Content";
+import CommentUi from "./CommentUi";
 
 // --- Types ---
-
 type Props = {
   abbr: string;
   postId: number;
@@ -57,9 +57,10 @@ function Info({
 }
 
 export default async function PostUi({ abbr, postId }: Props) {
-  const [gallName, postData] = await Promise.all([
+  const [gallName, postData, commentData] = await Promise.all([
     abbr === "best" ? "실시간 베스트" : fetchGallName(abbr),
     fetchPostData(abbr, postId),
+    fetchCommentData(postId),
   ]);
 
   return (
@@ -75,6 +76,10 @@ export default async function PostUi({ abbr, postId }: Props) {
         isLogin={postData.isLogin}
       />
       <Content content={postData.content} />
+      <CommentUi
+        commentData={commentData}
+        commentCount={postData.commentCount}
+      />
     </div>
   );
 }

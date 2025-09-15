@@ -5,7 +5,7 @@ import { createClient } from "@/app/utils/supabase/server";
 import { maskIpAddress } from "@/app/utils/maskIpAddress";
 
 // --- Types ---
-import { PostType } from "../types/post";
+import { CommentType, PostType } from "../types/post";
 
 export async function fetchPostData(
   abbr: string,
@@ -31,4 +31,24 @@ export async function fetchPostData(
     ...data,
     ipAddress: maskIpAddress(data.ipAddress),
   };
+}
+
+export async function fetchCommentData(postId: number): Promise<CommentType[]> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("comments")
+    .select("*")
+    .eq("postId", postId);
+
+  if (error) {
+    console.error(error);
+
+    return [];
+  }
+
+  return data.map((comment) => ({
+    ...comment,
+    ipAddress: maskIpAddress(comment.ipAddress),
+  }));
 }
