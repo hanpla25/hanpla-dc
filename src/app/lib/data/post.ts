@@ -38,7 +38,7 @@ export async function fetchCommentData(postId: number): Promise<CommentType[]> {
 
   const { data, error } = await supabase
     .from("comments")
-    .select("*")
+    .select("id,postId,parentId,nickname,content,isLogin,ipAddress,createdAt")
     .eq("postId", postId);
 
   if (error) {

@@ -9,6 +9,7 @@ import formatDate from "@/app/utils/formatDate";
 import HeadText from "../common/HeadText";
 import Content from "./Content";
 import CommentUi from "./CommentUi";
+import PostButtons from "./PostButtons";
 
 // --- Types ---
 type Props = {
@@ -44,8 +45,11 @@ function Info({
 }) {
   return (
     <div className="flex items-center justify-between px-2 py-1.5 border-b border-neutral-200 mb-4">
-      <span className="font-medium">
-        {nickname} {!isLogin && ipAddress}
+      <span className="flex items-center gap-1 font-medium">
+        {nickname}
+        <span className="text-xs text-neutral-400">
+          {!isLogin && ipAddress}
+        </span>
       </span>
       <div className="space-x-2 text-sm text-neutral-600">
         <span>조회 {viewCount}</span>
@@ -76,9 +80,15 @@ export default async function PostUi({ abbr, postId }: Props) {
         isLogin={postData.isLogin}
       />
       <Content content={postData.content} />
+      <PostButtons
+        like_count={postData.likeCount}
+        dislike_count={postData.dislikeCount}
+        post_id={postData.id}
+      />
       <CommentUi
         commentData={commentData}
         commentCount={postData.commentCount}
+        postId={postData.id}
       />
     </div>
   );

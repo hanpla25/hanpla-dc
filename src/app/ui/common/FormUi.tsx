@@ -9,6 +9,7 @@ export function FormInput({
   maxLength,
   placeholder,
   onKeyDown,
+  className,
 }: {
   type: string;
   name: string;
@@ -18,9 +19,10 @@ export function FormInput({
   maxLength?: number;
   placeholder: string;
   onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
+  className?: string;
 }) {
   return (
-    <div className="flex flex-col space-y-1">
+    <div className={`flex flex-col space-y-1 ${className}`}>
       <label htmlFor={name} className="text-sm text-neutral-700">
         {label}
       </label>

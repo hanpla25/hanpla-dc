@@ -8,6 +8,7 @@ import { createClient } from "@/app/utils/supabase/server";
 import { PostActionType } from "../types/actions";
 import { JSONContent } from "@tiptap/react";
 import { error } from "console";
+import { maskIpAddress } from "@/app/utils/maskIpAddress";
 
 const getIp = async (): Promise<string> => {
   const headersList = await headers();
@@ -113,8 +114,6 @@ export const getImageUrl = async (file: File): Promise<string> => {
   await uploadImage(filePath, file);
   const publicUrl = await getPublicUrl(filePath);
 
-  console.log(publicUrl);
-
   return publicUrl;
 };
 
@@ -179,4 +178,70 @@ export async function writeAction(
   const postId = data.id;
 
   redirect(`/${abbr}/${postId}`);
+}
+
+export async function increaseCollumFromPosts({
+  postId,
+  collum,
+}: {
+  postId: number;
+  collum: "likeCount" | "dislikeCount";
+}): Promise<number | null> {
+  const supabase = await createClient();
+
+  const collumMap = {
+    likeCount: "increment_post_like_count",
+    dislikeCount: "increment_post_dislike_count",
+  };
+
+  const { data, error } = await supabase.rpc(collumMap[collum], {
+    postId,
+  });
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
+
+  return data?.[0]?.[collum] ?? null;
+}
+
+export async function commentAction(formData: FormData) {
+  const supabase = await createClient();
+  const [ipAddress] = await Promise.all([getIp()]);
+
+  const postId = formData.get("postId") as string;
+  const nickname = formData.get("nickname") as string;
+  const password = formData.get("password") as string;
+  const content = formData.get("content") as string;
+  const parentId = formData.get("parentId") as string;
+
+  const { data, error } = await supabase
+    .from("comments")
+    .insert({
+      postId,
+      nickname,
+      password,
+      content,
+      parentId,
+      isLogin: false,
+      ipAddress,
+    })
+    .select("id,postId,parentId,nickname,content,isLogin,ipAddress,createdAt")
+    .single();
+
+  if (error) {
+    console.error(error);
+  }
+
+  return {
+    id: data!.id,
+    postId: data!.postId,
+    parentId: data!.parentId ?? null,
+    nickname: data!.nickname,
+    content: data!.content,
+    isLogin: data!.isLogin,
+    ipAddress: maskIpAddress(ipAddress),
+    createdAt: data!.createdAt,
+  };
 }

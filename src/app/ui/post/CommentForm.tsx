@@ -1,3 +1,76 @@
-export default function CommentForm() {
-  return <div>CommentForm</div>;
+"use client";
+
+import Form from "next/form";
+
+// --- Actions ---
+import { commentAction } from "@/app/lib/actions/post";
+
+// --- UI ---
+import { FormInput, FormSubmitButton } from "../common/FormUi";
+
+// --- Types ---
+
+type Props = {
+  postId: number;
+  onSubmit: (formData: FormData) => Promise<void>;
+};
+
+export default function CommentForm({ postId, onSubmit }: Props) {
+  return (
+    <Form
+      action={""}
+      onSubmit={async (e) => {
+        e.preventDefault();
+
+        const form = e.currentTarget;
+        const formData = new FormData(form);
+
+        await onSubmit(formData);
+
+        const textarea = form.querySelector<HTMLTextAreaElement>(
+          "textarea[name=content]"
+        );
+        if (textarea) textarea.value = "";
+      }}
+      className="mx-2 mt-8 px-2 py-6 border border-neutral-300 rounded-md space-y-4"
+    >
+      <div className="flex gap-2 w-full">
+        <FormInput
+          type="text"
+          name="nickname"
+          label="닉네임"
+          placeholder="닉네임"
+          minLength={2}
+          maxLength={8}
+          className="flex-1"
+        />
+        <FormInput
+          type="password"
+          name="password"
+          label="비밀번호"
+          placeholder="비밀번호"
+          minLength={2}
+          maxLength={20}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+            }
+          }}
+          className="flex-1"
+        />
+      </div>
+      <textarea
+        id="content"
+        name="content"
+        placeholder="댓글을 입력해주세요."
+        className="w-full h-32 p-2 border border-neutral-300 rounded-md resize-none focus:outline-none focus:ring-1 focus:ring-neutral-400"
+      />
+
+      <input type="hidden" name="postId" id="postId" defaultValue={postId} />
+
+      <div className="mt-3 flex justify-end">
+        <FormSubmitButton label="작성" isPending={false} />
+      </div>
+    </Form>
+  );
 }

@@ -56,7 +56,7 @@ function Info({
     <div className="px-2 text-xs text-gray-500 flex flex-wrap gap-3 items-center">
       <span>
         {userName}
-        {!isLogin && ` ${ipAddress}`}
+        <span className="text-neutral-400">{!isLogin && ` ${ipAddress}`}</span>
       </span>
 
       <span>{formatDate(createdAt, `${isBest ? "relative" : "time"}`)}</span>

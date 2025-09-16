@@ -36,7 +36,7 @@ export default async function GallUi({
   const [gallName, postList, totalPage] = await Promise.all([
     abbr === "best" ? "실시간 베스트" : fetchGallName(abbr),
     fetchPostListData({ abbr, page, isPopular, search, option }),
-    fetchPostListTotalPage({ abbr, page, isPopular, search, option }),
+    fetchPostListTotalPage({ abbr, isPopular, search, option }),
   ]);
 
   return (

@@ -27,6 +27,9 @@ function CommentContent({
         )}
         <span className="mr-2 font-semibold">{comment.nickname}</span>
         <span className="text-neutral-400">
+          {!comment.isLogin && comment.ipAddress}
+        </span>
+        <span className="text-neutral-400">
           {formatDate(comment.createdAt, "MDT")}
         </span>
       </p>
@@ -70,7 +73,7 @@ export default function CommentList({ comments }: Props) {
     comments.filter((c) => c.parentId === commentId);
 
   return (
-    <ul>
+    <ul className="mx-2">
       {rootComments.map((comment) => (
         <CommentItem
           key={comment.id}
