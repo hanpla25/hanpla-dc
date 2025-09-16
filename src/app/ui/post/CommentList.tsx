@@ -33,7 +33,9 @@ function CommentContent({
           {formatDate(comment.createdAt, "MDT")}
         </span>
       </p>
-      <p className={`text-sm ${isReply ? "ml-2" : ""}`}>{comment.content}</p>
+      <pre className={`text-sm ${isReply ? "ml-2" : ""}`}>
+        {comment.content}
+      </pre>
     </div>
   );
 }
