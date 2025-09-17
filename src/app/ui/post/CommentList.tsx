@@ -38,11 +38,6 @@ function CommentContent({
     if (replyingTo === comment.id) setReplyingTo(null);
   };
 
-  console.log(formatDate(comment.createdAt, "MDT"));
-  console.log(formatDate(comment.createdAt, "YMD"));
-  console.log(formatDate(comment.createdAt, "YMDT"));
-  console.log(formatDate(comment.createdAt, "time"));
-
   return (
     <div
       onClick={() => handleCommentClick()}
