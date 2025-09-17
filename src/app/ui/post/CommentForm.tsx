@@ -10,7 +10,7 @@ import { FormInput, FormSubmitButton } from "../common/FormUi";
 type Props = {
   postId: number;
   onSubmit: (formData: FormData) => Promise<void>;
-  parentId?: number;
+  parentId?: number | null;
 };
 
 export default function CommentForm({ postId, onSubmit, parentId }: Props) {
@@ -62,7 +62,9 @@ export default function CommentForm({ postId, onSubmit, parentId }: Props) {
       />
 
       <input type="hidden" name="postId" defaultValue={postId} />
-      <input type="hidden" name="parentId" defaultValue={parentId} />
+      {parentId && (
+        <input type="hidden" name="parentId" defaultValue={parentId} />
+      )}
 
       <div className="mt-3 flex justify-end">
         <FormSubmitButton label="작성" isPending={false} />
