@@ -38,6 +38,11 @@ function CommentContent({
     if (replyingTo === comment.id) setReplyingTo(null);
   };
 
+  console.log(formatDate(comment.createdAt, "MDT"));
+  console.log(formatDate(comment.createdAt, "YMD"));
+  console.log(formatDate(comment.createdAt, "YMDT"));
+  console.log(formatDate(comment.createdAt, "time"));
+
   return (
     <div
       onClick={() => handleCommentClick()}
@@ -83,7 +88,6 @@ function CommentItem({
   isSuccess: boolean;
   setIsSuccess: Dispatch<SetStateAction<boolean>>;
 }) {
-  console.log(isSuccess);
   return (
     <li>
       {/* 댓글 본문 */}
