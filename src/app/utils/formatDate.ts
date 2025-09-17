@@ -2,24 +2,22 @@ export default function formatDate(
   dateString: string,
   type: "time" | "YMD" | "relative" | "YMDT" | "MDT"
 ): string {
-  const date = new Date(dateString);
-  const now = new Date();
+  const dateUTC = new Date(dateString);
+
+  // KST 기준 변환
+  const date = new Date(
+    dateUTC.toLocaleString("en-US", { timeZone: "Asia/Seoul" })
+  );
+  const now = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" })
+  );
+
+  const pad = (n: number) => String(n).padStart(2, "0");
 
   const formatDatePart = (d: Date) =>
-    d.toLocaleDateString("ko-KR", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      timeZone: "Asia/Seoul",
-    });
-
+    `${d.getFullYear()}. ${pad(d.getMonth() + 1)}. ${pad(d.getDate())}`;
   const formatTimePart = (d: Date) =>
-    d.toLocaleTimeString("ko-KR", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-      timeZone: "Asia/Seoul",
-    });
+    `${pad(d.getHours())}:${pad(d.getMinutes())}`;
 
   if (type === "relative") {
     const diffSec = Math.floor((now.getTime() - date.getTime()) / 1000);
@@ -29,31 +27,21 @@ export default function formatDate(
     return `${Math.floor(diffSec / 86400)}일 전`;
   }
 
-  const kstDate = new Date(
-    date.toLocaleString("en-US", { timeZone: "Asia/Seoul" })
-  );
-  const kstNow = new Date(
-    now.toLocaleString("en-US", { timeZone: "Asia/Seoul" })
-  );
-
   const isToday =
-    kstDate.getFullYear() === kstNow.getFullYear() &&
-    kstDate.getMonth() === kstNow.getMonth() &&
-    kstDate.getDate() === kstNow.getDate();
+    date.getFullYear() === now.getFullYear() &&
+    date.getMonth() === now.getMonth() &&
+    date.getDate() === now.getDate();
 
   switch (type) {
     case "time":
-      return isToday
-        ? formatTimePart(kstDate)
-        : formatDatePart(kstDate).slice(5);
+      return isToday ? formatTimePart(date) : formatDatePart(date).slice(5);
     case "YMD":
-      return formatDatePart(kstDate);
+      return formatDatePart(date);
     case "YMDT":
-      return `${formatDatePart(kstDate)} ${formatTimePart(kstDate)}`;
+      return `${formatDatePart(date)} ${formatTimePart(date)}`;
     case "MDT":
-      const md = formatDatePart(kstDate).slice(5);
-      return `${md} ${formatTimePart(kstDate)}`;
+      return `${formatDatePart(date).slice(5)} ${formatTimePart(date)}`;
     default:
-      return formatDatePart(kstDate);
+      return formatDatePart(date);
   }
 }
