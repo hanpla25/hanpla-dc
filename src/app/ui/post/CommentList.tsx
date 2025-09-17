@@ -25,11 +25,11 @@ function CommentContent({
         {isReply && (
           <span className="mr-2 font-semibold text-neutral-400">ㄴ</span>
         )}
-        <span className="mr-2 font-semibold">{comment.nickname}</span>
+        <span className="mr-1 font-semibold">{comment.nickname}</span>
         <span className="text-neutral-400">
           {!comment.isLogin && comment.ipAddress}
         </span>
-        <span className="text-neutral-400">
+        <span className="ml-2 text-neutral-400">
           {formatDate(comment.createdAt, "MDT")}
         </span>
       </p>
