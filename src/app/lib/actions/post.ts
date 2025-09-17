@@ -227,7 +227,7 @@ export async function commentAction(formData: FormData) {
       isLogin: false,
       ipAddress,
     })
-    .select("id,postId,parentId,nickname,content,isLogin,ipAddress")
+    .select("id,postId,parentId,nickname,content,isLogin,ipAddress,createdAt")
     .single();
 
   if (error) {
@@ -242,5 +242,6 @@ export async function commentAction(formData: FormData) {
     content: data!.content,
     isLogin: data!.isLogin,
     ipAddress: maskIpAddress(ipAddress),
+    createdAt: data!.createdAt,
   };
 }
