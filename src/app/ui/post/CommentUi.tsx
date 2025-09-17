@@ -32,11 +32,13 @@ export default function CommentUi({
   postId,
 }: Props) {
   const [comments, setComments] = useState<CommentType[]>(commentData);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   async function handleSubmit(formData: FormData) {
     try {
       const newComment: CommentType = await commentAction(formData);
       setComments((prev) => [...prev, newComment]);
+      setIsSuccess(true);
     } catch (err) {
       console.error(err);
       alert("댓글 작성에 실패했습니다.");
@@ -50,6 +52,8 @@ export default function CommentUi({
         postId={postId}
         comments={comments}
         onSubmit={handleSubmit}
+        isSuccess={isSuccess}
+        setIsSuccess={setIsSuccess}
       />
       <CommentForm postId={postId} onSubmit={handleSubmit} />
     </div>

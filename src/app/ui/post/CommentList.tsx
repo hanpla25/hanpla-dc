@@ -15,20 +15,25 @@ type Props = {
   postId: number;
   comments: CommentType[];
   onSubmit: (formData: FormData) => Promise<void>;
+  isSuccess: boolean;
+  setIsSuccess: Dispatch<SetStateAction<boolean>>;
 };
 
 function CommentContent({
   comment,
-  isReply = false,
+  isReply,
   replyingTo,
   setReplyingTo,
+  setIsSuccess,
 }: {
   comment: CommentType;
   isReply?: boolean;
   replyingTo: number | null;
   setReplyingTo: Dispatch<SetStateAction<number | null>>;
+  setIsSuccess: Dispatch<SetStateAction<boolean>>;
 }) {
   const handleCommentClick = () => {
+    setIsSuccess(false);
     if (comment.id !== replyingTo) setReplyingTo(comment.id);
     if (replyingTo === comment.id) setReplyingTo(null);
   };
@@ -66,6 +71,8 @@ function CommentItem({
   replyingTo,
   setReplyingTo,
   onSubmit,
+  isSuccess,
+  setIsSuccess,
 }: {
   postId: number;
   comment: CommentType;
@@ -73,7 +80,10 @@ function CommentItem({
   replyingTo: number | null;
   setReplyingTo: Dispatch<SetStateAction<number | null>>;
   onSubmit: (formData: FormData) => Promise<void>;
+  isSuccess: boolean;
+  setIsSuccess: Dispatch<SetStateAction<boolean>>;
 }) {
+  console.log(isSuccess);
   return (
     <li>
       {/* 댓글 본문 */}
@@ -81,15 +91,20 @@ function CommentItem({
         comment={comment}
         replyingTo={replyingTo}
         setReplyingTo={setReplyingTo}
+        setIsSuccess={setIsSuccess}
       />
       {replyingTo === comment.id && (
-        <div className="ml-2 pb-2 border-b border-neutral-300">
-          ㄴ
-          <CommentForm
-            postId={postId}
-            onSubmit={onSubmit}
-            parentId={replyingTo}
-          />
+        <div className="ml-2">
+          {!isSuccess && (
+            <>
+              <span>ㄴ</span>
+              <CommentForm
+                postId={postId}
+                onSubmit={onSubmit}
+                parentId={replyingTo}
+              />
+            </>
+          )}
         </div>
       )}
 
@@ -100,18 +115,23 @@ function CommentItem({
             <li key={reply.id}>
               <CommentContent
                 comment={reply}
-                isReply
+                isReply={true}
                 replyingTo={replyingTo}
                 setReplyingTo={setReplyingTo}
+                setIsSuccess={setIsSuccess}
               />
               {replyingTo === reply.id && (
                 <div className="ml-2 pb-2 border-b border-neutral-300">
-                  ㄴ
-                  <CommentForm
-                    postId={postId}
-                    onSubmit={onSubmit}
-                    parentId={replyingTo}
-                  />
+                  {!isSuccess && (
+                    <>
+                      <span>ㄴ</span>
+                      <CommentForm
+                        postId={postId}
+                        onSubmit={onSubmit}
+                        parentId={replyingTo}
+                      />
+                    </>
+                  )}
                 </div>
               )}
             </li>
@@ -122,7 +142,13 @@ function CommentItem({
   );
 }
 
-export default function CommentList({ postId, comments, onSubmit }: Props) {
+export default function CommentList({
+  postId,
+  comments,
+  onSubmit,
+  isSuccess,
+  setIsSuccess,
+}: Props) {
   const [replyingTo, setReplyingTo] = useState<number | null>(null);
 
   // 부모 댓글 (parentId === null)
@@ -143,6 +169,8 @@ export default function CommentList({ postId, comments, onSubmit }: Props) {
           replyingTo={replyingTo}
           setReplyingTo={setReplyingTo}
           onSubmit={onSubmit}
+          isSuccess={isSuccess}
+          setIsSuccess={setIsSuccess}
         />
       ))}
     </ul>
