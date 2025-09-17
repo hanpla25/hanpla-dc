@@ -46,7 +46,11 @@ export default function CommentUi({
   return (
     <div className="mt-4">
       <CommentHead commentCount={commentCount} />
-      <CommentList comments={comments} />
+      <CommentList
+        postId={postId}
+        comments={comments}
+        onSubmit={handleSubmit}
+      />
       <CommentForm postId={postId} onSubmit={handleSubmit} />
     </div>
   );

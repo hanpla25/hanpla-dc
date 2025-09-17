@@ -2,9 +2,6 @@
 
 import Form from "next/form";
 
-// --- Actions ---
-import { commentAction } from "@/app/lib/actions/post";
-
 // --- UI ---
 import { FormInput, FormSubmitButton } from "../common/FormUi";
 
@@ -13,12 +10,13 @@ import { FormInput, FormSubmitButton } from "../common/FormUi";
 type Props = {
   postId: number;
   onSubmit: (formData: FormData) => Promise<void>;
+  parentId?: number;
 };
 
-export default function CommentForm({ postId, onSubmit }: Props) {
+export default function CommentForm({ postId, onSubmit, parentId }: Props) {
   return (
     <Form
-      action={""}
+      action=""
       onSubmit={async (e) => {
         e.preventDefault();
 
@@ -32,13 +30,12 @@ export default function CommentForm({ postId, onSubmit }: Props) {
         );
         if (textarea) textarea.value = "";
       }}
-      className="mx-2 mt-8 px-2 py-6 border border-neutral-300 rounded-md space-y-4"
+      className="mx-2 mt-1 px-2 py-6 border border-neutral-300 rounded-md space-y-4"
     >
       <div className="flex gap-2 w-full">
         <FormInput
           type="text"
           name="nickname"
-          label="닉네임"
           placeholder="닉네임"
           minLength={2}
           maxLength={8}
@@ -47,7 +44,6 @@ export default function CommentForm({ postId, onSubmit }: Props) {
         <FormInput
           type="password"
           name="password"
-          label="비밀번호"
           placeholder="비밀번호"
           minLength={2}
           maxLength={20}
@@ -60,13 +56,13 @@ export default function CommentForm({ postId, onSubmit }: Props) {
         />
       </div>
       <textarea
-        id="content"
         name="content"
         placeholder="댓글을 입력해주세요."
         className="w-full h-32 p-2 border border-neutral-300 rounded-md resize-none focus:outline-none focus:ring-1 focus:ring-neutral-400"
       />
 
-      <input type="hidden" name="postId" id="postId" defaultValue={postId} />
+      <input type="hidden" name="postId" defaultValue={postId} />
+      <input type="hidden" name="parentId" defaultValue={parentId} />
 
       <div className="mt-3 flex justify-end">
         <FormSubmitButton label="작성" isPending={false} />

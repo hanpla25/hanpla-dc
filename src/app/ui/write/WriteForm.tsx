@@ -34,6 +34,7 @@ export default function WriteForm({ gallName }: Props) {
     <Form action={formAction} className="px-2 space-y-3">
       <div className="flex items-center gap-4">
         <FormInput
+          id="nickname"
           label="닉네임"
           type="text"
           name="nickname"
@@ -44,6 +45,7 @@ export default function WriteForm({ gallName }: Props) {
         />
 
         <FormInput
+          id="password"
           label="비밀번호"
           type="password"
           name="password"
@@ -54,6 +56,7 @@ export default function WriteForm({ gallName }: Props) {
       </div>
 
       <FormInput
+        id="title"
         type="text"
         name="title"
         label="제목"

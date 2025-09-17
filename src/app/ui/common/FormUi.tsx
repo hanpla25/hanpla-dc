@@ -1,6 +1,7 @@
 import { KeyboardEventHandler } from "react";
 
 export function FormInput({
+  id,
   type,
   name,
   label,
@@ -11,9 +12,10 @@ export function FormInput({
   onKeyDown,
   className,
 }: {
+  id?: string;
   type: string;
   name: string;
-  label: string;
+  label?: string;
   defaultValue?: string;
   minLength?: number;
   maxLength?: number;
@@ -23,13 +25,16 @@ export function FormInput({
 }) {
   return (
     <div className={`flex flex-col space-y-1 ${className}`}>
-      <label htmlFor={name} className="text-sm text-neutral-700">
-        {label}
-      </label>
+      {label && (
+        <label htmlFor={name} className="text-sm text-neutral-700">
+          {label}
+        </label>
+      )}
+
       <input
         type={type}
         name={name}
-        id={name}
+        id={id}
         defaultValue={defaultValue}
         minLength={minLength}
         maxLength={maxLength}

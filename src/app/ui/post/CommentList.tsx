@@ -1,22 +1,41 @@
+"use client";
+
+import { Dispatch, SetStateAction, useState } from "react";
+
 // --- Utils ---
 import formatDate from "@/app/utils/formatDate";
+
+// --- UI ---
+import CommentForm from "./CommentForm";
 
 // --- Tyeps ---
 import { CommentType } from "@/app/lib/types/post";
 
 type Props = {
+  postId: number;
   comments: CommentType[];
+  onSubmit: (formData: FormData) => Promise<void>;
 };
 
 function CommentContent({
   comment,
   isReply = false,
+  replyingTo,
+  setReplyingTo,
 }: {
   comment: CommentType;
   isReply?: boolean;
+  replyingTo: number | null;
+  setReplyingTo: Dispatch<SetStateAction<number | null>>;
 }) {
+  const handleCommentClick = () => {
+    if (comment.id !== replyingTo) setReplyingTo(comment.id);
+    if (replyingTo === comment.id) setReplyingTo(null);
+  };
+
   return (
     <div
+      onClick={() => handleCommentClick()}
       className={`px-2 py-3 border-b border-neutral-300 space-y-1.5 ${
         isReply ? "bg-neutral-50" : ""
       }`}
@@ -33,7 +52,7 @@ function CommentContent({
           {formatDate(comment.createdAt, "MDT")}
         </span>
       </p>
-      <pre className={`text-sm ${isReply ? "ml-2" : ""}`}>
+      <pre className={`text-sm font-geist-sans ${isReply ? "ml-2" : ""}`}>
         {comment.content}
       </pre>
     </div>
@@ -41,23 +60,60 @@ function CommentContent({
 }
 
 function CommentItem({
+  postId,
   comment,
   replies,
+  replyingTo,
+  setReplyingTo,
+  onSubmit,
 }: {
+  postId: number;
   comment: CommentType;
   replies: CommentType[];
+  replyingTo: number | null;
+  setReplyingTo: Dispatch<SetStateAction<number | null>>;
+  onSubmit: (formData: FormData) => Promise<void>;
 }) {
   return (
     <li>
       {/* 댓글 본문 */}
-      <CommentContent comment={comment} />
+      <CommentContent
+        comment={comment}
+        replyingTo={replyingTo}
+        setReplyingTo={setReplyingTo}
+      />
+      {replyingTo === comment.id && (
+        <div className="ml-2 pb-2 border-b border-neutral-300">
+          ㄴ
+          <CommentForm
+            postId={postId}
+            onSubmit={onSubmit}
+            parentId={replyingTo}
+          />
+        </div>
+      )}
 
       {/* 대댓글 */}
       {replies.length > 0 && (
         <ul>
           {replies.map((reply) => (
             <li key={reply.id}>
-              <CommentContent comment={reply} isReply />
+              <CommentContent
+                comment={reply}
+                isReply
+                replyingTo={replyingTo}
+                setReplyingTo={setReplyingTo}
+              />
+              {replyingTo === reply.id && (
+                <div className="ml-2 pb-2 border-b border-neutral-300">
+                  ㄴ
+                  <CommentForm
+                    postId={postId}
+                    onSubmit={onSubmit}
+                    parentId={replyingTo}
+                  />
+                </div>
+              )}
             </li>
           ))}
         </ul>
@@ -66,7 +122,9 @@ function CommentItem({
   );
 }
 
-export default function CommentList({ comments }: Props) {
+export default function CommentList({ postId, comments, onSubmit }: Props) {
+  const [replyingTo, setReplyingTo] = useState<number | null>(null);
+
   // 부모 댓글 (parentId === null)
   const rootComments = comments.filter((c) => c.parentId === null);
 
@@ -81,6 +139,10 @@ export default function CommentList({ comments }: Props) {
           key={comment.id}
           comment={comment}
           replies={getReplies(comment.id)}
+          postId={postId}
+          replyingTo={replyingTo}
+          setReplyingTo={setReplyingTo}
+          onSubmit={onSubmit}
         />
       ))}
     </ul>
