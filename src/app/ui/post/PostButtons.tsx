@@ -20,16 +20,16 @@ function Button({
   const [disable, setDisable] = useState(false);
 
   const handleButtonClick = async () => {
-    const data = await increaseCollumFromPosts({
-      postId: postId,
-      collum: collum,
-    });
-
-    if (data) {
-      setCount(data);
-    }
-
+    setCount((prev) => prev + 1);
     setDisable(true);
+
+    try {
+      await increaseCollumFromPosts({ postId, collum });
+    } catch (err) {
+      console.error(err);
+      setCount((prev) => prev - 1);
+      setDisable(false);
+    }
   };
 
   return (
