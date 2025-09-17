@@ -54,7 +54,7 @@ function CommentContent({
           {!comment.isLogin && comment.ipAddress}
         </span>
         <span className="ml-2 text-neutral-400">
-          {formatDate(comment.createdAt, "MDT")}
+          {formatDate(comment.createdAt, "YMDT")}
         </span>
       </p>
       <pre className={`text-sm font-geist-sans ${isReply ? "ml-2" : ""}`}>
