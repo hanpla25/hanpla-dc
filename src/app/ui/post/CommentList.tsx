@@ -100,7 +100,7 @@ function CommentItem({
               <CommentForm
                 postId={postId}
                 onSubmit={onSubmit}
-                parentId={replyingTo}
+                parentId={comment.id}
               />
             </>
           )}
@@ -120,14 +120,14 @@ function CommentItem({
                 setIsSuccess={setIsSuccess}
               />
               {replyingTo === reply.id && (
-                <div className="ml-2 pb-2 border-b border-neutral-300">
+                <div className="ml-2">
                   {!isSuccess && (
                     <>
                       <span>ㄴ</span>
                       <CommentForm
                         postId={postId}
                         onSubmit={onSubmit}
-                        parentId={replyingTo}
+                        parentId={comment.id}
                       />
                     </>
                   )}

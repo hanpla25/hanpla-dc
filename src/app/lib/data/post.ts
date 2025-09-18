@@ -12,6 +12,10 @@ export async function fetchPostData(
   postId: number
 ): Promise<PostType> {
   const supabase = await createClient();
+  const { error: rpcError } = await supabase.rpc("increment_view_count", {
+    postId,
+  });
+  if (rpcError) console.error("조회수 증가 실패:", rpcError);
 
   const { data, error } = await supabase
     .from("posts")

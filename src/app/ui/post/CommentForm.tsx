@@ -37,6 +37,7 @@ export default function CommentForm({ postId, onSubmit, parentId }: Props) {
           type="text"
           name="nickname"
           placeholder="닉네임"
+          defaultValue="ㅇㅇ"
           minLength={2}
           maxLength={8}
           className="flex-1"
@@ -58,6 +59,9 @@ export default function CommentForm({ postId, onSubmit, parentId }: Props) {
       <textarea
         name="content"
         placeholder="댓글을 입력해주세요."
+        required
+        minLength={1}
+        maxLength={500}
         className="w-full h-32 p-2 border border-neutral-300 rounded-md resize-none focus:outline-none focus:ring-1 focus:ring-neutral-400"
       />
 
