@@ -1,10 +1,10 @@
 import { KeyboardEventHandler } from "react";
 
 export function FormInput({
-  id,
-  type,
-  name,
   label,
+  type,
+  id,
+  name,
   defaultValue,
   minLength,
   maxLength,
@@ -12,10 +12,10 @@ export function FormInput({
   onKeyDown,
   className,
 }: {
-  id?: string;
-  type: string;
-  name: string;
   label?: string;
+  type: string;
+  id?: string;
+  name: string;
   defaultValue?: string;
   minLength?: number;
   maxLength?: number;
@@ -33,8 +33,8 @@ export function FormInput({
 
       <input
         type={type}
-        name={name}
         id={id}
+        name={name}
         defaultValue={defaultValue}
         minLength={minLength}
         maxLength={maxLength}
@@ -65,6 +65,6 @@ export function FormSubmitButton({
   );
 }
 
-export const FormMsg = ({ msg }: { msg: string }) => {
+export const FormMsg = ({ msg }: { msg?: string }) => {
   return <p className="text-sm text-red-500 mt-2">{msg}</p>;
 };

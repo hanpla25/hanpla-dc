@@ -158,7 +158,7 @@ export default function CommentList({
     comments.filter((c) => c.parentId === commentId);
 
   return (
-    <ul className="mx-2">
+    <ul className="mx-2 cursor-pointer">
       {rootComments.map((comment) => (
         <CommentItem
           key={comment.id}
