@@ -17,7 +17,10 @@ export default function Btns({ isLogin, gallList }: Props) {
       className={`flex items-center ${isLogin ? "gap-2 lg:gap-4" : "gap-4"}`}
     >
       <Search gallList={gallList} />
-      <HeaderLinks isLogin={isLogin} className="hidden lg:block" />
+      <HeaderLinks
+        isLogin={isLogin}
+        className="hidden lg:block cursor-pointer"
+      />
       <MobileMenu isLogin={isLogin} />
     </div>
   );

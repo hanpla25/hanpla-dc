@@ -110,14 +110,14 @@ export async function loginAction(
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("users")
-    .select("userId,password")
+    .select("userId,password,role")
     .eq("userId", id)
     .single();
 
   if (error || data.password !== password)
     return "아이디 또는 비밀번호가 일치하지 않아요.";
 
-  const token = jwt.sign({ userId: data.userId, role: "user" }, JWT_SECRET, {
+  const token = jwt.sign({ userId: data.userId, role: data.role }, JWT_SECRET, {
     expiresIn: JWT_EXPIRES_IN,
   });
 

@@ -1,20 +1,21 @@
 import { redirect } from "next/navigation";
+
 // --- Data ---
 import { getUserToken } from "@/app/lib/data/user";
 
 // --- UI ---
 import HeadText from "@/app/ui/common/HeadText";
-import AuthForm from "@/app/ui/signup/SignupForm";
+import CreateForm from "@/app/ui/create/CreateForm";
 
-export default async function SignupPage() {
+export default async function CreatePage() {
   const token = await getUserToken();
 
-  if (token) redirect("/");
+  if (token?.role !== "admin") redirect("/");
 
   return (
     <>
-      <HeadText text="회원가입" />
-      <AuthForm />
+      <HeadText text="갤러리 생성" />
+      <CreateForm />
     </>
   );
 }

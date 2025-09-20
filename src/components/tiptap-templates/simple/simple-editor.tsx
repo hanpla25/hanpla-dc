@@ -228,14 +228,8 @@ export function SimpleEditor({
         <Toolbar
           ref={toolbarRef}
           style={{
-            ...(isScrolling && isMobile
-              ? { opacity: 0, transition: "opacity 0.1s ease-in-out" }
-              : {}),
-            ...(isMobile
-              ? {
-                  bottom: `calc(100% - ${windowSize.height - rect.y}px)`,
-                }
-              : {}),
+            ...(isScrolling && isMobile ? {} : {}),
+            ...(isMobile ? {} : {}),
           }}
         >
           {mobileView === "main" ? (
