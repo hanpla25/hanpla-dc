@@ -6,6 +6,7 @@ import "./style/globals.css";
 
 // --- Data ---
 import { fetchGallList } from "./lib/data/gall";
+import { getUserToken } from "./lib/data/user";
 
 // --- UI ---
 import Header from "./ui/header";
@@ -32,14 +33,19 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const gallList = await fetchGallList();
+  const [userToken, gallList] = await Promise.all([
+    getUserToken(),
+    fetchGallList(),
+  ]);
+
+  const isLogin = userToken ? true : false;
 
   return (
     <html lang="ko">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased max-w-6xl mx-auto`}
       >
-        <Header gallList={gallList} isLogin={false} />
+        <Header gallList={gallList} isLogin={isLogin} />
         <RecentGall gallData={gallList} />
         <main>{children}</main>
         <PopularGall />

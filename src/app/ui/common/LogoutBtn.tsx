@@ -3,6 +3,7 @@
 import Form from "next/form";
 
 // --- Actions ---
+import { logout } from "@/app/lib/actions/auth";
 
 export default function LogoutBtn({ className }: { className?: string }) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -12,7 +13,7 @@ export default function LogoutBtn({ className }: { className?: string }) {
   };
 
   return (
-    <Form action={""} onSubmit={handleSubmit}>
+    <Form action={logout} onSubmit={handleSubmit}>
       <button type="submit" className={className}>
         로그아웃
       </button>
