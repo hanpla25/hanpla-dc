@@ -20,14 +20,14 @@
     align-items: center;
     gap: 0.125rem;
 
-    &:empty {
-      display: none;
-    }
+    // &:empty {
+    //   display: none;
+    // }
 
-    &:empty + .tiptap-separator,
-    .tiptap-separator + &:empty {
-      display: none;
-    }
+    // &:empty + .tiptap-separator,
+    // .tiptap-separator + &:empty {
+    //   display: none;
+    // }
   }
 
   &[data-variant="fixed"] {

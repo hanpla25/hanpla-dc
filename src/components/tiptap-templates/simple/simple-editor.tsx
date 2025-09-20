@@ -209,7 +209,8 @@ export function SimpleEditor({
     content: "",
   });
 
-  const isScrolling = useScrolling();
+  // const isScrolling = useScrolling();
+  const isScrolling = false;
   const rect = useCursorVisibility({
     editor,
     overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
