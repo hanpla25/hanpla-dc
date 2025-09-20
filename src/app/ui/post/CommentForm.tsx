@@ -8,12 +8,18 @@ import { FormInput, FormSubmitButton } from "../common/FormUi";
 // --- Types ---
 
 type Props = {
+  nickname?: string;
   postId: number;
   onSubmit: (formData: FormData) => Promise<void>;
   parentId?: number | null;
 };
 
-export default function CommentForm({ postId, onSubmit, parentId }: Props) {
+export default function CommentForm({
+  nickname,
+  postId,
+  onSubmit,
+  parentId,
+}: Props) {
   return (
     <Form
       action=""
@@ -37,24 +43,28 @@ export default function CommentForm({ postId, onSubmit, parentId }: Props) {
           type="text"
           name="nickname"
           placeholder="닉네임"
-          defaultValue="ㅇㅇ"
+          defaultValue={nickname || "ㅇㅇ"}
           minLength={2}
           maxLength={8}
+          readOnly={nickname ? true : false}
           className="flex-1"
         />
-        <FormInput
-          type="password"
-          name="password"
-          placeholder="비밀번호"
-          minLength={2}
-          maxLength={20}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-            }
-          }}
-          className="flex-1"
-        />
+
+        {!nickname && (
+          <FormInput
+            type="password"
+            name="password"
+            placeholder="비밀번호"
+            minLength={2}
+            maxLength={20}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+              }
+            }}
+            className="flex-1"
+          />
+        )}
       </div>
       <textarea
         name="content"
@@ -69,6 +79,11 @@ export default function CommentForm({ postId, onSubmit, parentId }: Props) {
       {parentId && (
         <input type="hidden" name="parentId" defaultValue={parentId} />
       )}
+      <input
+        type="hidden"
+        name="isLogin"
+        defaultValue={nickname ? "true" : "false"}
+      />
 
       <div className="mt-3 flex justify-end">
         <FormSubmitButton label="작성" isPending={false} />

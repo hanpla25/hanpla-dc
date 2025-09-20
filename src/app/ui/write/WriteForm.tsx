@@ -16,10 +16,11 @@ import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor
 import { JSONContent } from "@tiptap/react";
 
 type Props = {
+  nickname?: string;
   gallName: string;
 };
 
-export default function WriteForm({ gallName }: Props) {
+export default function WriteForm({ nickname, gallName }: Props) {
   const { abbr } = useParams();
 
   const [state, formAction, pending] = useActionState(writeAction, null);
@@ -39,20 +40,23 @@ export default function WriteForm({ gallName }: Props) {
           type="text"
           name="nickname"
           placeholder="닉네임"
-          defaultValue="ㅇㅇ"
+          defaultValue={nickname || "ㅇㅇ"}
+          readOnly={nickname ? true : false}
           minLength={2}
           maxLength={10}
         />
 
-        <FormInput
-          id="password"
-          label="비밀번호"
-          type="password"
-          name="password"
-          placeholder="비밀번호"
-          minLength={4}
-          maxLength={20}
-        />
+        {!nickname && (
+          <FormInput
+            id="password"
+            label="비밀번호"
+            type="password"
+            name="password"
+            placeholder="비밀번호"
+            minLength={4}
+            maxLength={20}
+          />
+        )}
       </div>
 
       <FormInput
@@ -75,6 +79,12 @@ export default function WriteForm({ gallName }: Props) {
       <input type="hidden" name="content" id="content" value={editorJson} />
       <input type="hidden" name="abbr" id="abbr" value={abbr} />
       <input type="hidden" name="gallName" id="gallName" value={gallName} />
+      <input
+        type="hidden"
+        name="isLogin"
+        id="isLogin"
+        value={nickname ? "true" : "false"}
+      />
 
       {state?.success === false && <FormMsg msg={state.msg} />}
       <Buttons isPending={pending} />

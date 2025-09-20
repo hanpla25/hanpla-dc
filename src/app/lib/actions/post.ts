@@ -129,6 +129,8 @@ export async function writeAction(
   const content = formData.get("content");
   const nickname = formData.get("nickname") as string;
   const password = formData.get("password") as string;
+  const formIsLogin = formData.get("isLogin") as string;
+  const isLogin = formIsLogin === "true" ? true : false;
 
   if (typeof content !== "string")
     return {
@@ -161,6 +163,7 @@ export async function writeAction(
       content: updatedContent,
       nickname,
       ipAddress,
+      isLogin,
       password,
     })
     .select("id")
@@ -215,6 +218,8 @@ export async function commentAction(formData: FormData) {
   const password = formData.get("password") as string;
   const content = formData.get("content") as string;
   const parentId = formData.get("parentId") as string;
+  const formIsLogin = formData.get("isLogin") as string;
+  const isLogin = formIsLogin === "true" ? true : false;
 
   const { data, error } = await supabase
     .from("comments")
@@ -224,7 +229,7 @@ export async function commentAction(formData: FormData) {
       password,
       content,
       parentId,
-      isLogin: false,
+      isLogin,
       ipAddress,
     })
     .select("id,postId,parentId,nickname,content,isLogin,ipAddress,createdAt")

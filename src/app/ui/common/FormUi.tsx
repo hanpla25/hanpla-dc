@@ -8,6 +8,7 @@ export function FormInput({
   defaultValue,
   minLength,
   maxLength,
+  readOnly,
   placeholder,
   onKeyDown,
   className,
@@ -19,6 +20,7 @@ export function FormInput({
   defaultValue?: string;
   minLength?: number;
   maxLength?: number;
+  readOnly?: boolean;
   placeholder: string;
   onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
   className?: string;
@@ -39,6 +41,7 @@ export function FormInput({
         minLength={minLength}
         maxLength={maxLength}
         required
+        readOnly={readOnly}
         placeholder={placeholder}
         onKeyDown={onKeyDown}
         className="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:outline-none"

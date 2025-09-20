@@ -6,6 +6,7 @@ import { JWT_SECRET } from "../constants/auth";
 
 // --- Type ---
 import { UserPayload } from "../types/user";
+import { createClient } from "@/app/utils/supabase/server";
 
 export async function getUserToken(): Promise<UserPayload | null> {
   const cookieStore = await cookies();
@@ -20,4 +21,22 @@ export async function getUserToken(): Promise<UserPayload | null> {
     console.error("JWT 검증 실패:", err);
     return null;
   }
+}
+
+export async function fetchUserNickname(tokenId?: string): Promise<string> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("users")
+    .select("nickname")
+    .eq("userId", tokenId)
+    .single();
+
+  if (error) {
+    console.error(error);
+
+    return "ㅇㅇ";
+  }
+
+  return data.nickname;
 }

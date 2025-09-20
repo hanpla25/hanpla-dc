@@ -13,6 +13,7 @@ import PostButtons from "./PostButtons";
 
 // --- Types ---
 type Props = {
+  nickname?: string;
   abbr: string;
   postId: number;
 };
@@ -60,7 +61,7 @@ function Info({
   );
 }
 
-export default async function PostUi({ abbr, postId }: Props) {
+export default async function PostUi({ nickname, abbr, postId }: Props) {
   const [gallName, postData, commentData] = await Promise.all([
     abbr === "best" ? "실시간 베스트" : fetchGallName(abbr),
     fetchPostData(abbr, postId),
@@ -86,6 +87,7 @@ export default async function PostUi({ abbr, postId }: Props) {
         post_id={postData.id}
       />
       <CommentUi
+        nickname={nickname}
         commentData={commentData}
         commentCount={postData.commentCount}
         postId={postData.id}

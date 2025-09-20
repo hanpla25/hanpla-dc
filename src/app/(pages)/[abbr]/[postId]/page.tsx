@@ -1,4 +1,5 @@
 // --- UI ---
+import { fetchUserNickname, getUserToken } from "@/app/lib/data/user";
 import ScrollToTop from "@/app/ui/common/ScrollToTop";
 import GallUi from "@/app/ui/gall";
 import PostUi from "@/app/ui/post";
@@ -11,6 +12,8 @@ export default async function PostPage(props: {
   params: Params;
   searchParams: SearchParams;
 }) {
+  const userToken = await getUserToken();
+
   const params = await props.params;
   const abbr = params.abbr;
   const postId = params.postId;
@@ -22,10 +25,12 @@ export default async function PostPage(props: {
 
   const isPopular = mode === "popular" || abbr === "best" ? true : false;
 
+  const nickname = userToken ? await fetchUserNickname(userToken.userId) : null;
+
   return (
     <>
       <ScrollToTop />
-      <PostUi abbr={abbr} postId={postId} />
+      <PostUi nickname={nickname ?? undefined} abbr={abbr} postId={postId} />
       <GallUi
         abbr={abbr}
         isPopular={isPopular}

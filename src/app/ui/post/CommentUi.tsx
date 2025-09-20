@@ -13,6 +13,7 @@ import CommentList from "./CommentList";
 import { CommentType } from "@/app/lib/types/post";
 
 type Props = {
+  nickname?: string;
   commentData: CommentType[];
   commentCount: number;
   postId: number;
@@ -27,6 +28,7 @@ function CommentHead({ commentCount }: { commentCount: number }) {
 }
 
 export default function CommentUi({
+  nickname,
   commentData,
   commentCount,
   postId,
@@ -55,7 +57,11 @@ export default function CommentUi({
         isSuccess={isSuccess}
         setIsSuccess={setIsSuccess}
       />
-      <CommentForm postId={postId} onSubmit={handleSubmit} />
+      <CommentForm
+        nickname={nickname}
+        postId={postId}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 }
