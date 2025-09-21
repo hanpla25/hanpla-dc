@@ -11,6 +11,7 @@ import CommentList from "./CommentList";
 
 // --- Types ---
 import { CommentType } from "@/app/lib/types/post";
+import { fetchCommentData } from "@/app/lib/data/post";
 
 type Props = {
   nickname?: string;
@@ -38,8 +39,9 @@ export default function CommentUi({
 
   async function handleSubmit(formData: FormData) {
     try {
-      const newComment: CommentType = await commentAction(formData);
-      setComments((prev) => [...prev, newComment]);
+      await commentAction(formData);
+      const newComments = await fetchCommentData(postId);
+      setComments(newComments);
       setIsSuccess(true);
     } catch (err) {
       console.error(err);
