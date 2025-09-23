@@ -148,9 +148,8 @@ export default function CommentList({
   isSuccess,
   setIsSuccess,
 }: Props) {
-  if (comments.length === 0) return null;
-
   const [replyingTo, setReplyingTo] = useState<number | null>(null);
+  if (comments.length === 0) return null;
 
   // 부모 댓글 (parentId === null)
   const rootComments = comments.filter((c) => c.parentId === null);
