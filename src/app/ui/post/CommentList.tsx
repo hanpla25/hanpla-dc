@@ -148,6 +148,8 @@ export default function CommentList({
   isSuccess,
   setIsSuccess,
 }: Props) {
+  if (comments.length === 0) return null;
+
   const [replyingTo, setReplyingTo] = useState<number | null>(null);
 
   // 부모 댓글 (parentId === null)
@@ -172,6 +174,7 @@ export default function CommentList({
           setIsSuccess={setIsSuccess}
         />
       ))}
+      {/* <div>댓글 페이지네이션 임시</div> */}
     </ul>
   );
 }

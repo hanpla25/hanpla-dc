@@ -155,40 +155,40 @@ const useToolbarKeyboardNav = (
   }, [toolbarRef]);
 };
 
-const useToolbarVisibility = (
-  ref: React.RefObject<HTMLDivElement | null>
-): boolean => {
-  const [isVisible, setIsVisible] = React.useState<boolean>(true);
-  const isMountedRef = React.useRef(false);
+// const useToolbarVisibility = (
+//   ref: React.RefObject<HTMLDivElement | null>
+// ): boolean => {
+//   const [isVisible, setIsVisible] = React.useState<boolean>(true);
+//   const isMountedRef = React.useRef(false);
 
-  React.useEffect(() => {
-    isMountedRef.current = true;
-    return () => {
-      isMountedRef.current = false;
-    };
-  }, []);
+//   React.useEffect(() => {
+//     isMountedRef.current = true;
+//     return () => {
+//       isMountedRef.current = false;
+//     };
+//   }, []);
 
-  const checkVisibility = React.useCallback(() => {
-    if (!isMountedRef.current) return;
+//   const checkVisibility = React.useCallback(() => {
+//     if (!isMountedRef.current) return;
 
-    const toolbar = ref.current;
-    if (!toolbar) return;
+//     const toolbar = ref.current;
+//     if (!toolbar) return;
 
-    // Check if any group has visible children
-    const hasVisibleChildren = Array.from(toolbar.children).some((child) => {
-      if (!(child instanceof HTMLElement)) return false;
-      if (child.getAttribute("role") === "group") {
-        return child.children.length > 0;
-      }
-      return false;
-    });
+//     // Check if any group has visible children
+//     const hasVisibleChildren = Array.from(toolbar.children).some((child) => {
+//       if (!(child instanceof HTMLElement)) return false;
+//       if (child.getAttribute("role") === "group") {
+//         return child.children.length > 0;
+//       }
+//       return false;
+//     });
 
-    setIsVisible(hasVisibleChildren);
-  }, [ref]);
+//     setIsVisible(hasVisibleChildren);
+//   }, [ref]);
 
-  useObserveVisibility(ref, checkVisibility);
-  return isVisible;
-};
+//   useObserveVisibility(ref, checkVisibility);
+//   return isVisible;
+// };
 
 const useGroupVisibility = (
   ref: React.RefObject<HTMLDivElement | null>

@@ -60,10 +60,10 @@ import { HighlighterIcon } from "@/components/tiptap-icons/highlighter-icon";
 import { LinkIcon } from "@/components/tiptap-icons/link-icon";
 
 // --- Hooks ---
-import { useIsMobile } from "@/hooks/use-mobile";
-import { useWindowSize } from "@/hooks/use-window-size";
-import { useCursorVisibility } from "@/hooks/use-cursor-visibility";
-import { useScrolling } from "@/hooks/use-scrolling";
+// import { useIsMobile } from "@/hooks/use-mobile";
+// import { useWindowSize } from "@/hooks/use-window-size";
+// import { useCursorVisibility } from "@/hooks/use-cursor-visibility";
+// import { useScrolling } from "@/hooks/use-scrolling";
 
 // --- Components ---
 import { Placeholder } from "@tiptap/extensions";
@@ -150,12 +150,15 @@ const MobileToolbarContent = ({
 );
 
 export function SimpleEditor({
+  content,
   onUpdate,
 }: {
+  content?: JSONContent | null;
   onUpdate?: (json: JSONContent) => void;
 }) {
-  const isMobile = useIsMobile();
-  const windowSize = useWindowSize();
+  // const isMobile = useIsMobile();
+  const isMobile = false;
+  // const windowSize = useWindowSize();
   const [mobileView, setMobileView] = React.useState<
     "main" | "highlighter" | "link"
   >("main");
@@ -206,15 +209,21 @@ export function SimpleEditor({
         onError: (error) => console.error("Upload failed:", error),
       }),
     ],
-    content: "",
+    content: content,
   });
+
+  React.useEffect(() => {
+    if (editor && content) {
+      editor.commands.setContent(content);
+    }
+  }, [editor, content]);
 
   // const isScrolling = useScrolling();
   const isScrolling = false;
-  const rect = useCursorVisibility({
-    editor,
-    overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
-  });
+  // const rect = useCursorVisibility({
+  //   editor,
+  //   overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
+  // });
 
   React.useEffect(() => {
     if (!isMobile && mobileView !== "main") {

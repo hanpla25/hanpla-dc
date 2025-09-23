@@ -10,6 +10,7 @@ import HeadText from "../common/HeadText";
 import Content from "./Content";
 import CommentUi from "./CommentUi";
 import PostButtons from "./PostButtons";
+import PostEditButtons from "./PostEditButtons";
 
 // --- Types ---
 type Props = {
@@ -68,6 +69,8 @@ export default async function PostUi({ nickname, abbr, postId }: Props) {
     fetchCommentData(postId),
   ]);
 
+  const canEdit = !postData.isLogin || postData.nickname === nickname;
+
   return (
     <div className="mb-4">
       <HeadText text={`${gallName}`} href={`/${abbr}`} />
@@ -86,6 +89,10 @@ export default async function PostUi({ nickname, abbr, postId }: Props) {
         dislike_count={postData.dislikeCount}
         post_id={postData.id}
       />
+      {canEdit && (
+        <PostEditButtons postDataIsLogin={postData.isLogin} postId={postId} />
+      )}
+
       <CommentUi
         nickname={nickname}
         commentData={commentData}

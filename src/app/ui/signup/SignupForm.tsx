@@ -29,38 +29,38 @@ export default function AuthForm() {
   return (
     <Form action={formAction} className="mx-2 space-y-4">
       <FormInput
-        label="닉네임"
+        label="닉네임 (한글 또는 영어 2자 이상 8자 이하)"
         type="text"
         id="nickname"
         name="nickname"
         minLength={2}
         maxLength={8}
         defaultValue={state.inputs?.nickname}
-        placeholder="닉네임을 입력해주세요. (한글 또는 영어 2자 이상 8자 이하)"
+        placeholder="예시: 홍길동"
       />
       {state.filed === "nickname" && <FormMsg msg={state.msg} />}
 
       <FormInput
-        label="아이디"
+        label="아이디 (영어 또는 숫자 4자 이상 10자 이하)"
         type="text"
         id="id"
         name="id"
         minLength={4}
         maxLength={20}
         defaultValue={state.inputs?.id}
-        placeholder="아이디를 입력해주세요. (영어 또는 숫자 4자 이상 10자 이하)"
+        placeholder="예시: qwer"
       />
       {state.filed === "id" && <FormMsg msg={state.msg} />}
 
       <FormInput
-        label="비밀번호"
+        label="비밀번호 (영어 또는 숫자 4자 이상 10자 이하)"
         type="password"
         id="password"
         name="password"
         minLength={4}
         maxLength={20}
         defaultValue={state.inputs?.password}
-        placeholder="비밀번호를 입력해주세요. (영어 또는 숫자 4자 이상 10자 이하)"
+        placeholder="예시: 1234"
       />
       {state.filed === "password" && <FormMsg msg={state.msg} />}
 

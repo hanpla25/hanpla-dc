@@ -130,7 +130,10 @@ export async function writeAction(
   const nickname = formData.get("nickname") as string;
   const password = formData.get("password") as string;
   const formIsLogin = formData.get("isLogin") as string;
-  const isLogin = formIsLogin === "true" ? true : false;
+  const isLogin = formIsLogin === "true";
+  const formIsModify = formData.get("isModify") as string;
+  const isModify = formIsModify === "true";
+  const postId = formData.get("postId") as string;
 
   if (typeof content !== "string")
     return {
@@ -154,33 +157,49 @@ export async function writeAction(
   const updatedContent = contentObj;
   const supabase = await createClient();
 
-  const { data, error } = await supabase
-    .from("posts")
-    .insert({
-      abbr,
-      gallName,
-      title,
-      content: updatedContent,
-      nickname,
-      ipAddress,
-      isLogin,
-      password,
-    })
-    .select("id")
-    .single();
+  let data, error;
+
+  if (isModify && postId) {
+    ({ data, error } = await supabase
+      .from("posts")
+      .update({
+        title,
+        content: updatedContent,
+        nickname,
+        ipAddress,
+        isLogin,
+        password,
+      })
+      .eq("id", Number(postId))
+      .select("id")
+      .single());
+  } else {
+    ({ data, error } = await supabase
+      .from("posts")
+      .insert({
+        abbr,
+        gallName,
+        title,
+        content: updatedContent,
+        nickname,
+        ipAddress,
+        isLogin,
+        password,
+      })
+      .select("id")
+      .single());
+  }
 
   if (error) {
     console.error(error);
 
     return {
       success: false,
-      msg: "글쓰기 오류",
+      msg: isModify ? "글 수정 오류" : "글쓰기 오류",
     };
   }
 
-  const postId = data.id;
-
-  redirect(`/${abbr}/${postId}`);
+  redirect(`/${abbr}/${data?.id}`);
 }
 
 export async function increaseCollumFromPosts({
@@ -248,5 +267,47 @@ export async function commentAction(formData: FormData) {
     isLogin: data!.isLogin,
     ipAddress: maskIpAddress(ipAddress),
     createdAt: data!.createdAt,
+  };
+}
+
+export async function checkPasswordToPost(postId: number, formData: FormData) {
+  const supabase = await createClient();
+
+  const passwordInput = formData.get("password")?.toString() ?? "";
+
+  const { data, error } = await supabase
+    .from("posts")
+    .select("password")
+    .eq("id", postId)
+    .single();
+
+  if (error) {
+    console.error(error);
+    return { success: false, message: "서버 에러가 발생했습니다." };
+  }
+
+  if (!data || data.password !== passwordInput) {
+    return { success: false, message: "비밀번호가 일치하지 않습니다." };
+  }
+
+  return { success: true };
+}
+
+export async function deletePost(postId: number) {
+  const supabase = await createClient();
+
+  const { error } = await supabase.from("posts").delete().eq("id", postId);
+
+  if (error) {
+    console.error("삭제 실패:", error);
+    return {
+      success: false,
+      msg: "게시글 삭제에 실패했습니다.",
+    };
+  }
+
+  return {
+    success: true,
+    msg: "게시글이 삭제되었습니다.",
   };
 }

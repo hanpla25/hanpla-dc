@@ -15,14 +15,14 @@ export default function CreateForm() {
   return (
     <Form action={formAction} className="px-2 space-y-4">
       <FormInput
-        label="갤러리 이름"
+        label="갤러리 이름 (한글만 가능해요)"
         type="text"
         name="gallName"
         placeholder="예: 고양이"
       />
 
       <FormInput
-        label="갤러리 주소(영문 약어)"
+        label="갤러리 주소 (영문 약어)"
         type="text"
         name="abbr"
         placeholder="예: cat"
