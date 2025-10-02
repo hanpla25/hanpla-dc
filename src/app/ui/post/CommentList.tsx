@@ -17,6 +17,7 @@ type Props = {
   onSubmit: (formData: FormData) => Promise<void>;
   isSuccess: boolean;
   setIsSuccess: Dispatch<SetStateAction<boolean>>;
+  nickname?: string;
 };
 
 function CommentContent({
@@ -73,6 +74,7 @@ function CommentItem({
   onSubmit,
   isSuccess,
   setIsSuccess,
+  nickname,
 }: {
   postId: number;
   comment: CommentType;
@@ -82,6 +84,7 @@ function CommentItem({
   onSubmit: (formData: FormData) => Promise<void>;
   isSuccess: boolean;
   setIsSuccess: Dispatch<SetStateAction<boolean>>;
+  nickname?: string;
 }) {
   return (
     <li>
@@ -101,6 +104,7 @@ function CommentItem({
                 postId={postId}
                 onSubmit={onSubmit}
                 parentId={comment.id}
+                nickname={nickname}
               />
             </>
           )}
@@ -128,6 +132,7 @@ function CommentItem({
                         postId={postId}
                         onSubmit={onSubmit}
                         parentId={comment.id}
+                        nickname={nickname}
                       />
                     </>
                   )}
@@ -147,6 +152,7 @@ export default function CommentList({
   onSubmit,
   isSuccess,
   setIsSuccess,
+  nickname,
 }: Props) {
   const [replyingTo, setReplyingTo] = useState<number | null>(null);
   if (comments.length === 0) return null;
@@ -171,6 +177,7 @@ export default function CommentList({
           onSubmit={onSubmit}
           isSuccess={isSuccess}
           setIsSuccess={setIsSuccess}
+          nickname={nickname}
         />
       ))}
       {/* <div>댓글 페이지네이션 임시</div> */}

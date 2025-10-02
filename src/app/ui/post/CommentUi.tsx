@@ -58,6 +58,7 @@ export default function CommentUi({
         onSubmit={handleSubmit}
         isSuccess={isSuccess}
         setIsSuccess={setIsSuccess}
+        nickname={nickname}
       />
       <CommentForm
         nickname={nickname}
