@@ -34,7 +34,7 @@ const authSchema = (nickname: string, id: string, password: string) => {
       success: false,
       filed: "id",
       inputs: { nickname, id, password },
-      msg: "아이디는 2~8자의 영어 또는 숫자만 가능해요.",
+      msg: "아이디는 4~10자의 영어 또는 숫자만 가능해요.",
     };
   }
 
@@ -43,7 +43,7 @@ const authSchema = (nickname: string, id: string, password: string) => {
       success: false,
       filed: "password",
       inputs: { nickname, id, password },
-      msg: "비밀번호는 2~8자의 영어 또는 숫자만 가능해요.",
+      msg: "비밀번호는 4~10자의 영어 또는 숫자만 가능해요.",
     };
   }
 };

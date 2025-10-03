@@ -5,8 +5,9 @@ import { cookies } from "next/headers";
 import { JWT_SECRET } from "../constants/auth";
 
 // --- Type ---
-import { UserPayload } from "../types/user";
+import { UserInfo, UserPayload } from "../types/user";
 import { createClient } from "@/app/utils/supabase/server";
+import { redirect } from "next/navigation";
 
 export async function getUserToken(): Promise<UserPayload | null> {
   const cookieStore = await cookies();
@@ -39,4 +40,22 @@ export async function fetchUserNickname(tokenId?: string): Promise<string> {
   }
 
   return data.nickname;
+}
+
+export async function fetchUserInfo(tokenId?: string): Promise<UserInfo> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("users")
+    .select("nickname,userId")
+    .eq("userId", tokenId)
+    .single();
+
+  if (error) {
+    console.error(error);
+
+    redirect("/");
+  }
+
+  return data;
 }

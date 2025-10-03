@@ -46,7 +46,7 @@ export default function AuthForm() {
         id="id"
         name="id"
         minLength={4}
-        maxLength={20}
+        maxLength={10}
         defaultValue={state.inputs?.id}
         placeholder="예시: qwer"
       />
@@ -58,7 +58,7 @@ export default function AuthForm() {
         id="password"
         name="password"
         minLength={4}
-        maxLength={20}
+        maxLength={10}
         defaultValue={state.inputs?.password}
         placeholder="예시: 1234"
       />
